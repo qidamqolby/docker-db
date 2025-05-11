@@ -10,16 +10,10 @@ services:
         ports:
             - 5432:5432
         volumes:
-            - shared-postgresql-volume:/var/lib/postgresql/data
-        networks:
-            - shared-networks
+            - postgresql-volume:/var/lib/postgresql/data
         # uncomment if needed
         # mem_limit: 256m
         # cpus: 0.5
 
 volumes:
-    shared-postgresql-volume:
-
-networks:
-    shared-networks:
-        external: true
+    postgresql-volume:

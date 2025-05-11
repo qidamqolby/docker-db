@@ -10,16 +10,10 @@ services:
         ports:
             - 3306:3306
         volumes:
-            - shared-mariadb-volume:/var/lib/mysql
-        networks:
-            - shared-networks
+            - mariadb-volume:/var/lib/mysql
         # uncomment if needed
         # mem_limit: 256m
         # cpus: 0.5
 
 volumes:
-    shared-mariadb-volume:
-
-networks:
-    shared-networks:
-        external: true
+    mariadb-volume:
