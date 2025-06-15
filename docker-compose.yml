@@ -44,7 +44,7 @@ services:
             - app_network
 
     mongodb:
-        image: mongo:7.0.5-jammy
+        image: mongo:4.4
         container_name: mongodb_container
         restart: unless-stopped
         env_file: .env
