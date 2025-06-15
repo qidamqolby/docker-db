@@ -3,14 +3,14 @@ version: '3.8'
 services:
     postgres:
         image: postgres:15.6-alpine
-        container_name: postgres_db
+        container_name: postgres-container
         restart: unless-stopped
         env_file: .env
         environment:
             POSTGRES_PASSWORD: ${SERVICE_DB_PASS}
             POSTGRES_DB: test_db
         volumes:
-            - postgres_data:/var/lib/postgresql/data
+            - postgres_volume:/var/lib/postgresql/data
         ports:
             - '5432:5432'
         healthcheck:
@@ -18,19 +18,19 @@ services:
             interval: 5s
             timeout: 5s
             retries: 5
-        mem_limit: 512m
-        cpus: 1.0
+        # mem_limit: 512m
+        # cpus: 1.0
         networks:
             - app_network
 
     redis:
         image: redis:7-alpine
-        container_name: redis_cache
+        container_name: redis_container
         restart: unless-stopped
         env_file: .env
         command: redis-server --save 60 1 --loglevel warning --maxmemory 1gb --maxmemory-policy allkeys-lru
         volumes:
-            - redis_data:/data
+            - redis_volume:/data
         ports:
             - '6379:6379'
         healthcheck:
@@ -38,21 +38,22 @@ services:
             interval: 5s
             timeout: 3s
             retries: 5
-        mem_limit: 512m
-        cpus: 1.0
+        # mem_limit: 512m
+        # cpus: 1.0
         networks:
             - app_network
 
     mongodb:
         image: mongo:7.0.5-jammy
-        container_name: mongo_db
+        container_name: mongodb_container
         restart: unless-stopped
         env_file: .env
         environment:
             MONGO_INITDB_ROOT_USERNAME: ${SERVICE_DB_USER}
             MONGO_INITDB_ROOT_PASSWORD: ${SERVICE_DB_PASS}
         volumes:
-            - mongo_data:/data/db
+            - mongodb_volume:/data/db
+            - mongodb_volume:/data/configdb
         ports:
             - '27017:27017'
         healthcheck:
@@ -61,17 +62,17 @@ services:
             interval: 5s
             timeout: 5s
             retries: 5
-        mem_limit: 512m
-        cpus: 1.0
+        # mem_limit: 512m
+        # cpus: 1.0
         networks:
             - app_network
 
 volumes:
-    postgres_data:
+    postgres_volume:
         driver: local
-    redis_data:
+    redis_volume:
         driver: local
-    mongo_data:
+    mongodb_volume:
         driver: local
 
 networks:
