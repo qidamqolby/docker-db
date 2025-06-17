@@ -77,4 +77,5 @@ volumes:
 
 networks:
     network:
+        name: db_network
         driver: bridge
