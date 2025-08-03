@@ -1,4 +1,4 @@
-version: '3.8'
+# version: '3.8'
 
 services:
     postgres:
@@ -13,11 +13,6 @@ services:
             - postgres_volume:/var/lib/postgresql/data
         ports:
             - '5432:5432'
-        healthcheck:
-            test: ['CMD-SHELL', 'pg_isready -U postgres -d test_db']
-            interval: 5s
-            timeout: 5s
-            retries: 5
         # mem_limit: 512m
         # cpus: 1.0
         networks:
@@ -33,11 +28,6 @@ services:
             - redis_volume:/data
         ports:
             - '6379:6379'
-        healthcheck:
-            test: ['CMD', 'redis-cli', 'ping']
-            interval: 5s
-            timeout: 3s
-            retries: 5
         # mem_limit: 512m
         # cpus: 1.0
         networks:
@@ -56,12 +46,6 @@ services:
             - mongodb_volume:/data/configdb
         ports:
             - '27017:27017'
-        healthcheck:
-            test: >
-                CMD-SHELL echo 'db.runCommand("ping").ok' | mongosh -u ${SERVICE_DB_USER} -p ${SERVICE_DB_PASS} --quiet | grep 1
-            interval: 5s
-            timeout: 5s
-            retries: 5
         # mem_limit: 512m
         # cpus: 1.0
         networks:
@@ -77,5 +61,5 @@ volumes:
 
 networks:
     network:
-        name: db_network
+        name: docker_network
         driver: bridge
